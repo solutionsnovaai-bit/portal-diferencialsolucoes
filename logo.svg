@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Background square with rounded corners -->
+  <rect width="400" height="400" rx="72" fill="#EDE0CC"/>
+  <rect x="18" y="18" width="364" height="364" rx="58" fill="none" stroke="#A47440" stroke-width="4" opacity="0.5"/>
+
+  <!-- Large D letter -->
+  <text x="68" y="295" font-family="Georgia, 'Times New Roman', serif" font-size="245" font-weight="700" fill="#5C2E0E" letter-spacing="-6">D</text>
+
+  <!-- Bottom brown bar -->
+  <rect x="38" y="300" width="324" height="62" rx="14" fill="#7A3F1A"/>
+
+  <!-- SOLUÇÕES text -->
+  <text x="200" y="344" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#F5EDE0" text-anchor="middle" letter-spacing="8">SOLUÇÕES</text>
+
+  <!-- Star accent top right -->
+  <text x="346" y="52" font-size="28" fill="#A47440" opacity="0.8" font-family="Arial">✦</text>
+</svg>
