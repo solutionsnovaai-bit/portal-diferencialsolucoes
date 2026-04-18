@@ -1,414 +1,125 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diferencial Soluções · Portal Jurídico IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --br:#5C2E0E;--br2:#7A3F1A;--br3:#A0612A;
-  --gd:#8B5E2E;--gd2:#A47440;--gd3:#C49255;
-  --bg:#F5EDE0;--bg2:#EDE0CC;--bg3:#E2D0B8;
-  --cr:#2C1810;--cr2:#4A2C1A;--cr3:#6B3E22;
-  --tx:rgba(44,24,16,0.88);--tx2:rgba(44,24,16,0.55);--tx3:rgba(44,24,16,0.32);
-  --bd:rgba(139,94,46,0.22);--bd2:rgba(139,94,46,0.42);
-  --card:rgba(255,255,255,0.72);--card2:rgba(255,255,255,0.45);
-  --sh:rgba(92,46,14,0.12);
-}
-html,body{width:100%;height:100%;overflow-x:hidden;cursor:none;background:var(--bg)}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Diferencial Soluções · Portal Jurídico com Inteligência Artificial para análise trabalhista">
+  <title>Diferencial Soluções · Portal Jurídico IA</title>
 
-/* CUSTOM CURSOR */
-#cursor{position:fixed;width:8px;height:8px;background:var(--br);border-radius:50%;pointer-events:none;z-index:99999;transition:transform 0.1s;mix-blend-mode:multiply}
-#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(139,94,46,0.45);border-radius:50%;pointer-events:none;z-index:99998;transition:all 0.15s ease;transform:translate(-50%,-50%)}
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-/* CANVAS BG */
-#bgCanvas{position:fixed;inset:0;z-index:0;opacity:0.55}
+  <!-- Favicon via logo -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
 
-/* GRAIN */
-body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;opacity:0.04;pointer-events:none;z-index:1;animation:grainAnim 0.4s steps(1) infinite}
-@keyframes grainAnim{0%{background-position:0 0}25%{background-position:50% 25%}50%{background-position:25% 75%}75%{background-position:75% 50%}100%{background-position:100% 100%}}
-
-/* LOADER */
-#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease,visibility 0.8s ease}
-#loader.done{opacity:0;visibility:hidden;pointer-events:none}
-.ld-logo{display:flex;flex-direction:column;align-items:center;gap:0}
-.ld-img{width:110px;height:110px;border-radius:22px;overflow:hidden;border:1.5px solid rgba(139,94,46,0.3);box-shadow:0 0 50px rgba(139,94,46,0.15),0 20px 60px rgba(92,46,14,0.12);animation:ldImgIn 0.9s cubic-bezier(0.16,1,0.3,1) both;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
-@keyframes ldImgIn{from{opacity:0;transform:scale(0.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.ld-name{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:400;color:var(--cr);letter-spacing:0.08em;margin-top:20px;animation:ldTxtIn 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) both}
-.ld-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gd);margin-top:4px;animation:ldTxtIn 0.9s 0.35s both}
-.ld-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gd),transparent);margin:20px auto 0;animation:ldLineIn 0.6s 0.5s both}
-@keyframes ldTxtIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes ldLineIn{from{height:0;opacity:0}to{height:40px;opacity:1}}
-.ld-bar-wrap{width:240px;height:1px;background:rgba(139,94,46,0.15);margin-top:48px;overflow:hidden;animation:ldFadeIn 0.5s 0.6s both}
-.ld-bar{height:100%;background:linear-gradient(90deg,transparent,var(--gd),var(--gd3),var(--gd));width:0%;transition:width 0.08s linear;background-size:200% 100%;animation:shimmer 1.5s linear infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.ld-pct{font-size:10px;letter-spacing:0.2em;color:rgba(139,94,46,0.4);margin-top:10px;animation:ldFadeIn 0.5s 0.6s both}
-.ld-status{font-size:11px;font-style:italic;font-family:"Cormorant Garamond",serif;color:rgba(44,24,16,0.3);margin-top:6px;height:16px;transition:opacity 0.3s;animation:ldFadeIn 0.5s 0.7s both}
-@keyframes ldFadeIn{from{opacity:0}to{opacity:1}}
-
-/* MAIN */
-#app{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column}
-
-/* HEADER */
-.header{padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);background:rgba(245,237,224,0.82);backdrop-filter:blur(24px);position:sticky;top:0;z-index:100;box-shadow:0 1px 20px rgba(92,46,14,0.06)}
-.hlogo{display:flex;align-items:center;gap:12px}
-.hlogo-svg{width:38px;height:38px;flex-shrink:0}
-.hlogo-text{line-height:1.1}
-.hlogo-name{font-family:"Cormorant Garamond",serif;font-size:17px;color:var(--cr);letter-spacing:0.05em}
-.hlogo-sub{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gd);opacity:0.8}
-.hbadge{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gd);border:1px solid var(--bd2);padding:4px 12px;border-radius:20px;background:rgba(139,94,46,0.08)}
-
-/* TABS */
-.tab-nav{display:flex;align-items:center;justify-content:center;padding:28px 20px 0;gap:0;position:relative;z-index:10}
-.tab-track{display:flex;background:rgba(255,255,255,0.6);border:1px solid var(--bd);border-radius:14px;padding:3px;gap:2px;backdrop-filter:blur(12px);box-shadow:0 2px 12px rgba(92,46,14,0.07)}
-.tab-btn{position:relative;padding:9px 18px;border:none;background:transparent;color:var(--tx3);font-family:"DM Sans",sans-serif;font-size:12px;font-weight:400;cursor:pointer;border-radius:11px;transition:all 0.25s;letter-spacing:0.04em;white-space:nowrap;display:flex;align-items:center;gap:6px}
-.tab-btn .tab-icon{font-size:13px;transition:transform 0.3s}
-.tab-btn:hover{color:var(--tx2);background:rgba(139,94,46,0.06)}
-.tab-btn.active{background:rgba(255,255,255,0.9);color:var(--br);border:1px solid rgba(139,94,46,0.2);box-shadow:0 2px 10px rgba(92,46,14,0.1)}
-.tab-btn.active .tab-icon{transform:scale(1.15)}
-
-/* CONTENT AREA */
-.tab-content{display:none;animation:tabIn 0.4s cubic-bezier(0.16,1,0.3,1) both}
-.tab-content.active{display:block}
-@keyframes tabIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-/* ─── TAB 1: ANÁLISE PDF ─── */
-.analise-wrap{max-width:520px;margin:0 auto;padding:48px 20px 80px}
-.analise-hero{text-align:center;margin-bottom:40px}
-.hero-eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gd);margin-bottom:14px;opacity:0.85}
-.hero-title{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:300;color:var(--cr);line-height:1.2;margin-bottom:10px}
-.hero-title em{font-style:italic;color:var(--gd2)}
-.hero-desc{font-size:13px;color:var(--tx2);line-height:1.7}
-.upload-card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:36px;backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(92,46,14,0.08)}
-.dropzone{border:1.5px dashed rgba(139,94,46,0.32);border-radius:14px;padding:40px 20px;text-align:center;cursor:pointer;transition:all 0.25s;position:relative;background:rgba(139,94,46,0.025);margin-bottom:20px}
-.dropzone:hover,.dropzone.over{border-color:var(--gd);background:rgba(139,94,46,0.06)}
-.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.dz-ring{width:56px;height:56px;border-radius:50%;border:1.5px solid rgba(139,94,46,0.28);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:rgba(139,94,46,0.07);transition:all 0.25s}
-.dropzone:hover .dz-ring{border-color:var(--gd);background:rgba(139,94,46,0.14);transform:scale(1.05)}
-.dz-icon{font-size:22px}
-.dz-title{font-size:14px;font-weight:400;color:var(--tx);margin-bottom:4px}
-.dz-sub{font-size:12px;color:var(--tx3)}
-.dz-chip{display:inline-block;margin-top:10px;font-size:10px;color:var(--gd);background:rgba(139,94,46,0.08);border:1px solid rgba(139,94,46,0.2);border-radius:20px;padding:3px 10px;letter-spacing:0.06em}
-.file-pill{display:none;align-items:center;gap:10px;background:rgba(139,94,46,0.07);border:1px solid rgba(139,94,46,0.22);border-radius:10px;padding:10px 14px;margin-bottom:18px}
-.file-pill.show{display:flex}
-.fp-ico{color:var(--gd);font-size:16px}
-.fp-name{flex:1;font-size:13px;color:var(--cr);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fp-sz{font-size:11px;color:var(--tx3)}
-.fp-rm{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:18px;line-height:1;transition:color 0.2s}
-.fp-rm:hover{color:rgba(200,60,60,0.7)}
-.erro-box{display:none;background:rgba(200,60,60,0.07);border:1px solid rgba(200,60,60,0.2);border-radius:10px;padding:11px 14px;font-size:12px;color:#b04040;margin-bottom:16px}
-.btn-send{width:100%;background:linear-gradient(135deg,var(--br) 0%,var(--br2) 60%,var(--br3) 100%);border:none;border-radius:12px;padding:15px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;color:#F5EDE0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.25s;box-shadow:0 6px 24px rgba(92,46,14,0.28);letter-spacing:0.04em}
-.btn-send:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(92,46,14,0.4)}
-.btn-send:disabled{opacity:0.4;cursor:not-allowed;transform:none}
-.spinner{width:16px;height:16px;border:2px solid rgba(245,237,224,0.3);border-top-color:#F5EDE0;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ─── LOADING SCREEN ─── */
-#screenLoading{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center}
-#screenLoading.show{display:flex}
-.sl-logo{width:90px;height:90px;border-radius:18px;overflow:hidden;border:1.5px solid var(--bd2);animation:logoPulse 2s ease-in-out infinite;margin-bottom:24px;background:var(--bg2);display:flex;align-items:center;justify-content:center}
-@keyframes logoPulse{0%,100%{box-shadow:0 0 0 1px rgba(139,94,46,0.2),0 20px 50px rgba(92,46,14,0.1)}50%{box-shadow:0 0 0 1px rgba(139,94,46,0.5),0 20px 50px rgba(92,46,14,0.15),0 0 30px 4px rgba(139,94,46,0.08)}}
-.sl-title{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--cr);margin-bottom:4px}
-.sl-sub{font-size:10px;letter-spacing:0.15em;color:var(--gd);text-transform:uppercase;margin-bottom:36px}
-.sl-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;width:260px}
-.sl-step{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--tx3);transition:color 0.4s}
-.sl-step.done{color:var(--gd2)}
-.sl-step.active{color:var(--cr)}
-.sl-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;transition:all 0.3s}
-.sl-step.active .sl-dot{background:var(--gd);box-shadow:0 0 6px rgba(139,94,46,0.5)}
-.sl-step.done .sl-dot{background:var(--gd2)}
-.sl-prog-wrap{width:260px;height:1px;background:rgba(139,94,46,0.12);overflow:hidden}
-.sl-prog{height:100%;background:linear-gradient(90deg,var(--gd),var(--gd3));width:0%;transition:width 0.5s ease}
-
-/* ─── RESULTADO ─── */
-#screenResultado{display:none;padding:40px 20px 80px}
-#screenResultado.show{display:block}
-.res-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.res-back{background:transparent;border:1px solid var(--bd2);border-radius:10px;padding:8px 14px;font-size:12px;color:var(--gd);cursor:pointer;font-family:"DM Sans",sans-serif;display:flex;align-items:center;gap:6px;transition:all 0.2s;letter-spacing:0.04em}
-.res-back:hover{background:rgba(139,94,46,0.08);border-color:var(--gd)}
-.res-minilogo{display:flex;align-items:center;gap:8px}
-.res-minilogo-svg{width:28px;height:28px}
-.res-minilogo-txt{font-size:12px;color:var(--tx2);font-family:"DM Sans",sans-serif}
-.res-grid{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-.res-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;overflow:hidden;backdrop-filter:blur(16px);box-shadow:0 2px 16px rgba(92,46,14,0.07);animation:cardIn 0.5s cubic-bezier(0.16,1,0.3,1) both}
-.res-card:nth-child(1){animation-delay:0s}
-.res-card:nth-child(2){animation-delay:0.06s}
-.res-card:nth-child(3){animation-delay:0.12s}
-.res-card:nth-child(4){animation-delay:0.18s}
-.res-card:nth-child(5){animation-delay:0.24s}
-@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.res-card-hdr{background:linear-gradient(135deg,rgba(139,94,46,0.1),rgba(160,97,42,0.06));padding:16px 22px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.res-card-hdr h3{font-family:"Cormorant Garamond",serif;font-size:14px;color:var(--gd2);font-weight:500;letter-spacing:0.04em}
-.res-card-body{padding:22px}
-.res-text{font-size:13px;color:var(--tx2);line-height:1.8;white-space:pre-wrap;font-family:"DM Sans",sans-serif}
-.badge-pot{padding:5px 14px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase}
-.pot-alto{background:rgba(70,150,50,0.1);border:1px solid rgba(70,150,50,0.3);color:#3a8830}
-.pot-medio{background:rgba(139,94,46,0.1);border:1px solid rgba(139,94,46,0.3);color:var(--gd2)}
-.pot-baixo{background:rgba(180,60,40,0.08);border:1px solid rgba(180,60,40,0.25);color:#b04030}
-.tese-item{padding:12px 16px;border-radius:10px;margin-bottom:8px;background:rgba(139,94,46,0.04);border-left:2px solid var(--gd)}
-.tese-item:last-child{margin:0}
-.tese-nome{font-size:13px;font-weight:500;color:var(--cr);margin-bottom:3px}
-.tese-just{font-size:12px;color:var(--tx2);line-height:1.5}
-.ponto-item{padding:10px 14px;border-radius:8px;margin-bottom:6px;font-size:12px;line-height:1.5;color:var(--tx2)}
-.ponto-item:last-child{margin:0}
-.p-forte{background:rgba(139,94,46,0.04);border-left:2px solid var(--gd)}
-.p-atencao{background:rgba(180,100,40,0.04);border-left:2px solid #b06020}
-.verbas-table{width:100%;border-collapse:collapse}
-.verbas-table th{font-size:10px;font-weight:500;color:var(--gd);letter-spacing:0.08em;text-transform:uppercase;padding:7px 12px;text-align:left;border-bottom:1px solid var(--bd)}
-.verbas-table td{font-size:12px;color:var(--tx2);padding:10px 12px;border-bottom:1px solid rgba(139,94,46,0.07)}
-.verbas-table tr:last-child td{border:none}
-.v-nome{font-weight:400;color:var(--cr)!important}
-.v-val{color:var(--gd2)!important;font-weight:500;white-space:nowrap}
-.total-row td{background:rgba(139,94,46,0.05)!important}
-
-/* ─── TAB 2: ENTREVISTA ─── */
-.ent-outer{max-width:700px;margin:0 auto;padding:40px 20px 80px}
-.section-hero{text-align:center;margin-bottom:36px}
-.section-eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gd);opacity:0.85;margin-bottom:12px}
-.section-title{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--cr);margin-bottom:8px}
-.section-desc{font-size:13px;color:var(--tx2);line-height:1.7}
-.form-section{background:var(--card);border:1px solid var(--bd);border-radius:18px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 12px rgba(92,46,14,0.05)}
-.form-sec-hdr{padding:16px 22px;background:linear-gradient(120deg,rgba(139,94,46,0.1),rgba(160,97,42,0.06));display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;transition:background 0.2s}
-.form-sec-hdr:hover{background:linear-gradient(120deg,rgba(139,94,46,0.16),rgba(160,97,42,0.1))}
-.form-sec-hdr.collapsed{background:rgba(255,255,255,0.4)}
-.form-sec-hdr.collapsed .fsec-title{color:var(--tx3)}
-.form-sec-hdr.collapsed .fsec-num{background:rgba(139,94,46,0.06);color:var(--tx3)}
-.form-sec-hdr.collapsed .fsec-chev{transform:rotate(-90deg);opacity:0.3}
-.fsec-num{width:24px;height:24px;background:rgba(139,94,46,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--cr);flex-shrink:0}
-.fsec-title{font-family:"Cormorant Garamond",serif;font-size:15px;color:var(--gd2);flex:1;letter-spacing:0.03em}
-.fsec-chev{color:rgba(44,24,16,0.35);font-size:18px;transition:all 0.3s}
-.form-sec-body{padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-sec-body.single{grid-template-columns:1fr}
-.form-sec-body.hidden{display:none}
-.field{display:flex;flex-direction:column;gap:5px}
-.field.full{grid-column:1/-1}
-.field label{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(139,94,46,0.65)}
-.field input,.field select,.field textarea{background:rgba(245,237,224,0.7);border:1px solid rgba(139,94,46,0.18);border-radius:8px;padding:10px 12px;font-family:"DM Sans",sans-serif;font-size:13px;color:var(--cr);outline:none;width:100%;transition:all 0.2s}
-.field input::placeholder,.field textarea::placeholder{color:var(--tx3)}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gd);background:rgba(255,255,255,0.8);box-shadow:0 0 0 3px rgba(139,94,46,0.08)}
-.field textarea{resize:vertical;min-height:72px}
-.field select option{background:#F5EDE0;color:var(--cr)}
-.radio-grp,.check-grp{display:flex;gap:7px;flex-wrap:wrap}
-.rb,.cb{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.5);border:1px solid rgba(139,94,46,0.18);border-radius:7px;padding:7px 12px;cursor:pointer;font-size:12px;color:var(--tx2);transition:all 0.18s;user-select:none;font-family:"DM Sans",sans-serif}
-.rb:hover,.cb:hover{border-color:rgba(139,94,46,0.4);background:rgba(139,94,46,0.06)}
-.rb.active,.cb.active{border-color:var(--gd);background:rgba(139,94,46,0.1);color:var(--gd2)}
-.rb input,.cb input{display:none}
-.cond-block{grid-column:1/-1;background:rgba(139,94,46,0.03);border:1px solid rgba(139,94,46,0.12);border-radius:10px;padding:16px;display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:2px}
-.cond-block.visible{display:grid}
-.cond-block.single{grid-template-columns:1fr}
-.cond-title{grid-column:1/-1;font-family:"Cormorant Garamond",serif;font-size:13px;color:var(--gd2);padding-bottom:8px;border-bottom:1px solid var(--bd)}
-.form-submit{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:28px;padding:28px;background:var(--card);border:1px solid var(--bd);border-radius:18px;text-align:center}
-.form-submit p{font-size:12px;color:var(--tx3);max-width:380px;line-height:1.6}
-.btn-primary{background:linear-gradient(135deg,var(--br),var(--br2),var(--br3));color:#F5EDE0;border:none;border-radius:10px;padding:14px 42px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:400;cursor:pointer;transition:all 0.2s;letter-spacing:0.05em;box-shadow:0 4px 20px rgba(92,46,14,0.25)}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(92,46,14,0.38)}
-.success-state{display:none;text-align:center;padding:56px 20px}
-.success-state.show{display:block}
-.success-ring{width:60px;height:60px;border:1.5px solid var(--gd);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px;color:var(--gd);background:rgba(139,94,46,0.08);animation:successPop 0.5s cubic-bezier(0.16,1,0.3,1) both}
-@keyframes successPop{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
-.success-state h3{font-family:"Cormorant Garamond",serif;font-size:26px;color:var(--cr);margin-bottom:8px}
-.success-state p{color:var(--tx2);font-size:13px}
-
-/* ─── TAB 3: INSIGHTS ─── */
-.insights-outer{max-width:700px;margin:0 auto;padding:40px 20px 80px}
-.insights-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
-.insight-card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:24px;transition:all 0.25s;cursor:default;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(92,46,14,0.06)}
-.insight-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,94,46,0.05),transparent);opacity:0;transition:opacity 0.3s}
-.insight-card:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(92,46,14,0.12)}
-.insight-card:hover::before{opacity:1}
-.ic-icon{font-size:28px;margin-bottom:14px}
-.ic-num{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:300;color:var(--gd2);line-height:1;margin-bottom:4px}
-.ic-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:10px}
-.ic-desc{font-size:12px;color:var(--tx2);line-height:1.6}
-.ic-bar{height:2px;background:rgba(139,94,46,0.12);border-radius:2px;margin-top:14px;overflow:hidden}
-.ic-bar-fill{height:100%;background:linear-gradient(90deg,var(--gd),var(--gd3));border-radius:2px;transition:width 1s ease 0.3s}
-.insights-cta{margin-top:24px;padding:24px;background:var(--card);border:1px solid var(--bd);border-radius:18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:0 2px 12px rgba(92,46,14,0.05)}
-.insights-cta-text h4{font-family:"Cormorant Garamond",serif;font-size:18px;color:var(--cr);margin-bottom:4px}
-.insights-cta-text p{font-size:12px;color:var(--tx2)}
-.btn-outline{background:transparent;border:1px solid var(--bd2);color:var(--gd);border-radius:9px;padding:10px 22px;font-family:"DM Sans",sans-serif;font-size:12px;cursor:pointer;transition:all 0.2s;letter-spacing:0.05em}
-.btn-outline:hover{background:rgba(139,94,46,0.08);border-color:var(--gd)}
-
-/* ─── TAB 4: HISTÓRICO ─── */
-.historico-outer{max-width:700px;margin:0 auto;padding:40px 20px 80px}
-.hist-empty{text-align:center;padding:60px 20px}
-.hist-empty-icon{font-size:40px;margin-bottom:16px;opacity:0.3}
-.hist-empty h3{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--cr);opacity:0.4;margin-bottom:6px}
-.hist-empty p{font-size:13px;color:var(--tx3)}
-.hist-list{display:flex;flex-direction:column;gap:10px;margin-top:28px}
-.hist-item{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.2s}
-.hist-item:hover{border-color:var(--bd2);background:rgba(255,255,255,0.85)}
-.hi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.hi-dot.alto{background:#3a8830;box-shadow:0 0 6px rgba(58,136,48,0.4)}
-.hi-dot.medio{background:var(--gd2);box-shadow:0 0 6px rgba(139,94,46,0.4)}
-.hi-dot.baixo{background:#b04030;box-shadow:0 0 6px rgba(180,60,48,0.4)}
-.hi-info{flex:1}
-.hi-name{font-size:13px;color:var(--cr);margin-bottom:2px}
-.hi-meta{font-size:11px;color:var(--tx3)}
-.hi-badge{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:12px}
-.hi-badge.alto{background:rgba(58,136,48,0.08);color:#3a8830;border:1px solid rgba(58,136,48,0.2)}
-.hi-badge.medio{background:rgba(139,94,46,0.08);color:var(--gd2);border:1px solid var(--bd)}
-.hi-badge.baixo{background:rgba(180,60,48,0.08);color:#b04030;border:1px solid rgba(180,60,48,0.2)}
-
-/* ─── TAB 5: CONFIG ─── */
-.config-outer{max-width:580px;margin:0 auto;padding:40px 20px 80px}
-.config-section{margin-bottom:28px;background:var(--card);border:1px solid var(--bd);border-radius:18px;overflow:hidden;box-shadow:0 2px 12px rgba(92,46,14,0.05)}
-.config-section-title{font-family:"Cormorant Garamond",serif;font-size:13px;color:var(--gd);letter-spacing:0.09em;text-transform:uppercase;padding:16px 22px 14px;border-bottom:1px solid var(--bd);background:linear-gradient(135deg,rgba(139,94,46,0.07),rgba(160,97,42,0.03))}
-.config-row{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid rgba(139,94,46,0.07)}
-.config-row:last-child{border:none}
-.cr-label{font-size:13px;color:var(--cr)}
-.cr-sub{font-size:11px;color:var(--tx3);margin-top:2px}
-.toggle{width:42px;height:24px;background:rgba(139,94,46,0.1);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;flex-shrink:0;border:1px solid var(--bd)}
-.toggle.on{background:rgba(139,94,46,0.28);border-color:var(--gd)}
-.toggle::after{content:"";position:absolute;width:18px;height:18px;background:rgba(44,24,16,0.25);border-radius:50%;top:2px;left:2px;transition:all 0.3s}
-.toggle.on::after{left:20px;background:var(--gd2)}
-.config-input{background:rgba(245,237,224,0.8);border:1px solid var(--bd);border-radius:8px;padding:9px 12px;font-family:"DM Sans",sans-serif;font-size:12px;color:var(--cr);outline:none;width:200px}
-.config-input:focus{border-color:var(--gd)}
-.config-badge{background:rgba(139,94,46,0.08);border:1px solid var(--bd);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--gd);letter-spacing:0.06em}
-
-/* AI MODEL SELECTOR */
-.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 22px 20px}
-.model-card{position:relative;border:1.5px solid var(--bd);border-radius:12px;padding:12px 14px;cursor:pointer;transition:all 0.2s;background:rgba(245,237,224,0.5)}
-.model-card:hover{border-color:var(--gd);background:rgba(139,94,46,0.05)}
-.model-card.selected{border-color:var(--gd2);background:rgba(139,94,46,0.1);box-shadow:0 2px 10px rgba(92,46,14,0.12)}
-.model-card input[type=radio]{position:absolute;opacity:0;pointer-events:none}
-.model-logo{font-size:18px;margin-bottom:5px}
-.model-name{font-size:12px;font-weight:500;color:var(--cr);letter-spacing:0.02em}
-.model-desc{font-size:10px;color:var(--tx3);margin-top:2px;line-height:1.4}
-.model-check{position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent;transition:all 0.2s}
-.model-card.selected .model-check{background:var(--gd2);border-color:var(--gd2);color:#F5EDE0}
-
-/* CONFIG RANGE */
-.config-range-wrap{display:flex;align-items:center;gap:10px;padding:4px 0}
-.config-range{-webkit-appearance:none;appearance:none;width:130px;height:4px;border-radius:2px;background:rgba(139,94,46,0.15);outline:none;cursor:pointer}
-.config-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gd2);cursor:pointer;border:2px solid var(--bg)}
-.range-val{font-size:11px;color:var(--gd);font-weight:500;min-width:36px;text-align:right}
-
-/* ─── FOOTER ─── */
-.portal-footer{text-align:center;font-size:9px;color:var(--tx3);letter-spacing:0.12em;text-transform:uppercase;padding:20px;opacity:0.5}
-
-/* RESPONSIVE */
-@media(max-width:600px){
-  .header{padding:12px 16px}
-  .tab-track{flex-wrap:wrap}
-  .tab-btn{font-size:11px;padding:7px 10px}
-  .form-sec-body,.insights-grid{grid-template-columns:1fr}
-  .cond-block{grid-template-columns:1fr}
-  .hero-title,.section-title{font-size:26px}
-  .analise-wrap,.ent-outer,.insights-outer,.historico-outer,.config-outer{padding:28px 14px 60px}
-  .model-grid{grid-template-columns:1fr}
-}
-</style>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<!-- CURSOR -->
+<!-- ─── CURSOR ─── -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- CANVAS -->
+<!-- ─── AMBIENT CANVAS ─── -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- LOGO SVG INLINE (shared symbol) -->
-<svg style="display:none">
-  <symbol id="logo-ds" viewBox="0 0 120 120">
-    <rect width="120" height="120" rx="22" fill="#EDE0CC"/>
-    <rect x="6" y="6" width="108" height="108" rx="18" fill="none" stroke="#A47440" stroke-width="1.5" opacity="0.6"/>
-    <!-- D letter -->
-    <text x="28" y="86" font-family="Georgia,serif" font-size="72" font-weight="600" fill="#5C2E0E" letter-spacing="-2">D</text>
-    <!-- bottom text bar -->
-    <rect x="14" y="90" width="92" height="18" rx="5" fill="#7A3F1A"/>
-    <text x="60" y="103" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#F5EDE0" text-anchor="middle" letter-spacing="2">SOLUÇÕES</text>
-    <!-- star accent -->
-    <text x="104" y="18" font-size="9" fill="#A47440" opacity="0.7">✦</text>
-  </symbol>
-</svg>
-
-<!-- LOADER -->
-<div id="loader">
+<!-- ─── LOADER ─── -->
+<div id="loader" role="status" aria-label="Carregando sistema">
   <div class="ld-logo">
     <div class="ld-img">
-      <svg width="80" height="80"><use href="#logo-ds"/></svg>
+      <img src="assets/img/logo.svg" alt="Diferencial Soluções" width="80" height="80">
     </div>
     <div class="ld-name">Diferencial Soluções</div>
     <div class="ld-sub">Portal Jurídico · IA</div>
-    <div class="ld-line"></div>
+    <div class="ld-divider"></div>
   </div>
-  <div class="ld-bar-wrap"><div class="ld-bar" id="ldBar"></div></div>
+  <div class="ld-bar-wrap">
+    <div class="ld-bar" id="ldBar"></div>
+  </div>
   <div class="ld-pct" id="ldPct">0%</div>
   <div class="ld-status" id="ldStatus">Iniciando sistema...</div>
 </div>
 
-<!-- APP -->
+<!-- ─── APP ─── -->
 <div id="app">
 
   <!-- HEADER -->
-  <header class="header">
+  <header class="header" role="banner">
     <div class="hlogo">
-      <svg class="hlogo-svg"><use href="#logo-ds"/></svg>
+      <img class="hlogo-img" src="assets/img/logo.svg" alt="Diferencial Soluções logo" width="40" height="40">
       <div class="hlogo-text">
         <div class="hlogo-name">Diferencial Soluções</div>
         <div class="hlogo-sub">Portal Jurídico Interno</div>
       </div>
     </div>
-    <div class="hbadge">IA · Uso Exclusivo Interno</div>
+    <div class="hbadge" aria-label="Sistema ativo">IA · Uso Exclusivo Interno</div>
   </header>
 
-  <!-- TABS -->
-  <div class="tab-nav">
-    <div class="tab-track">
-      <button class="tab-btn active" data-tab="analise" onclick="switchTab('analise')">
-        <span class="tab-icon">⚖️</span> Análise PDF
+  <!-- TAB NAV -->
+  <nav class="tab-nav" role="navigation" aria-label="Navegação principal">
+    <div class="tab-track" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="analise"    onclick="switchTab('analise')">
+        <span class="tab-icon" aria-hidden="true">⚖️</span> Análise PDF
       </button>
-      <button class="tab-btn" data-tab="entrevista" onclick="switchTab('entrevista')">
-        <span class="tab-icon">📋</span> Entrevista
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="entrevista" onclick="switchTab('entrevista')">
+        <span class="tab-icon" aria-hidden="true">📋</span> Entrevista
       </button>
-      <button class="tab-btn" data-tab="insights" onclick="switchTab('insights')">
-        <span class="tab-icon">✦</span> Insights
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="insights"   onclick="switchTab('insights')">
+        <span class="tab-icon" aria-hidden="true">✦</span> Insights
       </button>
-      <button class="tab-btn" data-tab="historico" onclick="switchTab('historico')">
-        <span class="tab-icon">🗂</span> Histórico
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="historico"  onclick="switchTab('historico')">
+        <span class="tab-icon" aria-hidden="true">🗂</span> Histórico
       </button>
-      <button class="tab-btn" data-tab="config" onclick="switchTab('config')">
-        <span class="tab-icon">⚙</span> Config
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="config"     onclick="switchTab('config')">
+        <span class="tab-icon" aria-hidden="true">⚙</span> Config
       </button>
     </div>
-  </div>
+  </nav>
 
-  <!-- ═══ TAB 1: ANÁLISE PDF ═══ -->
-  <div class="tab-content active" id="tab-analise">
+  <!-- ═══════════════════════════════════════════════
+       TAB 1 · ANÁLISE PDF
+  ═══════════════════════════════════════════════ -->
+  <div class="tab-content active" id="tab-analise" role="tabpanel">
+
+    <!-- UPLOAD SCREEN -->
     <div id="screenUpload" class="analise-wrap">
       <div class="analise-hero">
         <div class="hero-eyebrow">Motor de Análise Jurídica · IA</div>
         <h1 class="hero-title">Avalie o <em>potencial</em><br>do caso em segundos</h1>
         <p class="hero-desc">Envie a entrevista em PDF e receba teses jurídicas, estimativa de verbas e recomendações estratégicas geradas por IA.</p>
       </div>
+
       <div class="upload-card">
-        <div class="dropzone" id="dropzone">
-          <input type="file" id="fileInput" accept=".pdf">
-          <div class="dz-ring"><div class="dz-icon">📄</div></div>
+        <div class="dropzone" id="dropzone" aria-label="Área para envio de arquivo PDF">
+          <input type="file" id="fileInput" accept=".pdf" aria-label="Selecionar arquivo PDF">
+          <div class="dz-ring"><div class="dz-icon" aria-hidden="true">📄</div></div>
           <div class="dz-title">Solte a entrevista aqui</div>
           <div class="dz-sub">ou clique para selecionar</div>
           <div class="dz-chip">PDF · máx. 4,5 MB</div>
         </div>
-        <div class="file-pill" id="filePill">
-          <span class="fp-ico">📄</span>
+
+        <div class="file-pill" id="filePill" aria-live="polite">
+          <span class="fp-ico" aria-hidden="true">📄</span>
           <span class="fp-name" id="fpName"></span>
-          <span class="fp-sz" id="fpSize"></span>
-          <button class="fp-rm" onclick="removeFile()">×</button>
+          <span class="fp-sz"   id="fpSize"></span>
+          <button class="fp-rm" onclick="removeFile()" aria-label="Remover arquivo">×</button>
         </div>
-        <div class="erro-box" id="erroBox"></div>
-        <button class="btn-send" id="btnSend" onclick="enviar()" disabled>
-          <div class="spinner" id="spinnerRing"></div>
+
+        <div class="erro-box" id="erroBox" role="alert"></div>
+
+        <button class="btn-send" id="btnSend" onclick="enviar()" disabled aria-label="Analisar documento com IA">
+          <div class="spinner" id="spinnerRing" aria-hidden="true"></div>
           <span id="btnIcon">Analisar com IA →</span>
         </button>
       </div>
     </div>
 
-    <!-- LOADING -->
-    <div id="screenLoading">
-      <div class="sl-logo">
-        <svg width="68" height="68"><use href="#logo-ds"/></svg>
+    <!-- LOADING SCREEN -->
+    <div id="screenLoading" role="status" aria-live="polite">
+      <div class="sl-logo-wrap">
+        <img src="assets/img/logo.svg" alt="Diferencial Soluções" width="68" height="68">
       </div>
       <div class="sl-title">Analisando o caso</div>
       <div class="sl-sub">Diferencial Soluções · IA</div>
@@ -420,50 +131,73 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
         <div class="sl-step" id="step4"><div class="sl-dot"></div>Gerando recomendações estratégicas...</div>
         <div class="sl-step" id="step5"><div class="sl-dot"></div>Finalizando análise...</div>
       </div>
-      <div class="sl-prog-wrap"><div class="sl-prog" id="slFill"></div></div>
+      <div class="sl-prog-wrap">
+        <div class="sl-prog" id="slFill"></div>
+      </div>
     </div>
 
-    <!-- RESULTADO -->
+    <!-- RESULTADO SCREEN -->
     <div id="screenResultado">
       <div class="res-header">
-        <button class="res-back" onclick="voltarInicio()">← Nova análise</button>
+        <button class="res-back" onclick="voltarInicio()" aria-label="Nova análise">← Nova análise</button>
         <div class="res-minilogo">
-          <svg class="res-minilogo-svg"><use href="#logo-ds"/></svg>
+          <img class="res-minilogo-img" src="assets/img/logo.svg" alt="logo" width="28" height="28">
           <span class="res-minilogo-txt">Diferencial Soluções</span>
         </div>
       </div>
-      <div class="res-grid">
+
+      <div class="res-grid" id="resGrid">
+        <!-- Potencial -->
         <div class="res-card">
-          <div class="res-card-hdr"><h3>Potencial do Caso</h3><span class="badge-pot" id="badgePotencial"></span></div>
-          <div class="res-card-body"><div class="res-text" id="resResumo"></div></div>
+          <div class="res-card-hdr">
+            <h3>Potencial do Caso</h3>
+            <span class="badge-pot" id="badgePotencial"></span>
+          </div>
+          <div class="res-card-body">
+            <div class="res-text" id="resResumo"></div>
+          </div>
         </div>
+        <!-- Teses -->
         <div class="res-card">
           <div class="res-card-hdr"><h3>Teses Jurídicas Identificadas</h3></div>
           <div class="res-card-body" id="resTesesBody"></div>
         </div>
+        <!-- Pontos -->
         <div class="res-card">
           <div class="res-card-hdr"><h3>Pontos de Atenção</h3></div>
           <div class="res-card-body" id="resPontosBody"></div>
         </div>
+        <!-- Verbas -->
         <div class="res-card">
           <div class="res-card-hdr"><h3>Estimativa de Verbas Rescisórias</h3></div>
           <div class="res-card-body">
             <table class="verbas-table">
-              <thead><tr><th>Verba</th><th>Base de Cálculo</th><th>Estimativa</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Verba</th>
+                  <th>Base de Cálculo</th>
+                  <th>Estimativa</th>
+                </tr>
+              </thead>
               <tbody id="resVerbasBody"></tbody>
             </table>
           </div>
         </div>
+        <!-- Recomendações -->
         <div class="res-card">
           <div class="res-card-hdr"><h3>Recomendações Estratégicas</h3></div>
-          <div class="res-card-body"><div class="res-text" id="resRec"></div></div>
+          <div class="res-card-body">
+            <div class="res-text" id="resRec"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ TAB 2: ENTREVISTA ═══ -->
-  <div class="tab-content" id="tab-entrevista">
+  <!-- ═══════════════════════════════════════════════
+       TAB 2 · ENTREVISTA
+  ═══════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-entrevista" role="tabpanel">
     <div class="ent-outer">
       <div class="section-hero">
         <div class="section-eyebrow">Coleta de Dados · Online</div>
@@ -471,131 +205,384 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
         <p class="section-desc">Formulário digital inteligente — campos condicionais aparecem conforme o perfil do caso.</p>
       </div>
 
+      <!-- FORM -->
       <div id="entForm">
-        <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">1</span><span class="fsec-title">Dados Pessoais</span><span class="fsec-chev">›</span></div>
-          <div class="form-sec-body">
-            <div class="field full"><label>Nome completo</label><input type="text" placeholder="Nome do reclamante"></div>
-            <div class="field"><label>CPF</label><input type="text" placeholder="000.000.000-00"></div>
-            <div class="field"><label>Data de nascimento</label><input type="date"></div>
-            <div class="field"><label>Telefone celular</label><input type="tel" placeholder="(11) 99999-9999"></div>
-            <div class="field"><label>E-mail</label><input type="email" placeholder="email@exemplo.com"></div>
-            <div class="field"><label>Cidade / Estado</label><input type="text" placeholder="São Paulo - SP"></div>
-            <div class="field"><label>Estado civil</label><select><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>Divorciado(a)</option><option>Viúvo(a)</option><option>União estável</option></select></div>
-          </div>
-        </div>
 
+        <!-- 1. Dados Pessoais -->
         <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">2</span><span class="fsec-title">Dados da Empresa</span><span class="fsec-chev">›</span></div>
-          <div class="form-sec-body">
-            <div class="field full"><label>Razão social / Nome fantasia</label><input type="text" placeholder="Ex: Drogaria São Paulo, Carrefour..."></div>
-            <div class="field"><label>CNPJ</label><input type="text" placeholder="00.000.000/0000-00"></div>
-            <div class="field"><label>Cidade da empresa</label><input type="text" placeholder="Onde trabalhava"></div>
-            <div class="field"><label>Cargo / Função</label><input type="text" placeholder="Ex: Açougueiro, Operador de Caixa..."></div>
-            <div class="field"><label>Último salário bruto (R$)</label><input type="text" placeholder="Ex: 2.150,00"></div>
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">1</span>
+            <span class="fsec-title">Dados Pessoais</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
           </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">3</span><span class="fsec-title">Contrato de Trabalho</span><span class="fsec-chev">›</span></div>
           <div class="form-sec-body">
-            <div class="field"><label>Data de admissão</label><input type="date"></div>
-            <div class="field"><label>Data de demissão</label><input type="date"></div>
-            <div class="field full"><label>Forma de desligamento</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'dem')"><input type="radio">Sem justa causa</label><label class="rb" onclick="rSel(this,'dem')"><input type="radio">Com justa causa</label><label class="rb" onclick="rSel(this,'dem')"><input type="radio">Pediu demissão</label><label class="rb" onclick="rSel(this,'dem')"><input type="radio">Aposentadoria</label></div></div>
-            <div class="field full"><label>CTPS foi assinada?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'ctps')"><input type="radio">Sim, corretamente</label><label class="rb" onclick="rSel(this,'ctps')"><input type="radio">Não foi assinada</label><label class="rb" onclick="rSel(this,'ctps')"><input type="radio">Assinada parcialmente</label></div></div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">4</span><span class="fsec-title">Jornada e Horas Extras</span><span class="fsec-chev">›</span></div>
-          <div class="form-sec-body">
-            <div class="field"><label>Entrada</label><input type="time"></div>
-            <div class="field"><label>Saída</label><input type="time"></div>
-            <div class="field"><label>Intervalo de almoço</label><select><option value="">Selecione</option><option>Não tinha</option><option>Menos de 1h</option><option>1 hora</option><option>Mais de 1h</option></select></div>
-            <div class="field"><label>Controle de ponto</label><select><option value="">Selecione</option><option>Ponto eletrônico</option><option>Cartão de ponto</option><option>Folha de presença</option><option>Sem controle</option><option>Dispensado de marcar</option></select></div>
-            <div class="field full"><label>Realizava horas extras habitualmente?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'he');cShow('c-he',true)"><input type="radio">Sim</label><label class="rb" onclick="rSel(this,'he');cShow('c-he',false)"><input type="radio">Não</label></div></div>
-            <div class="cond-block" id="c-he">
-              <div class="field"><label>Quantidade por dia</label><input type="text" placeholder="Ex: 2 horas diárias"></div>
-              <div class="field"><label>Recebia pagamento pelas HE?</label><select><option value="">Selecione</option><option>Sim, sempre</option><option>Às vezes</option><option>Nunca recebia</option></select></div>
-              <div class="field full"><label>Trabalhava também em:</label><div class="check-grp"><label class="cb" onclick="cTog(this)"><input type="checkbox">Sábados</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Domingos</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Feriados</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Reuniões fora do horário</label></div></div>
+            <div class="field full">
+              <label for="f-nome">Nome completo</label>
+              <input id="f-nome" type="text" placeholder="Nome do reclamante">
+            </div>
+            <div class="field">
+              <label for="f-cpf">CPF</label>
+              <input id="f-cpf" type="text" placeholder="000.000.000-00">
+            </div>
+            <div class="field">
+              <label for="f-nasc">Data de nascimento</label>
+              <input id="f-nasc" type="date">
+            </div>
+            <div class="field">
+              <label for="f-tel">Telefone celular</label>
+              <input id="f-tel" type="tel" placeholder="(11) 99999-9999">
+            </div>
+            <div class="field">
+              <label for="f-email">E-mail</label>
+              <input id="f-email" type="email" placeholder="email@exemplo.com">
+            </div>
+            <div class="field">
+              <label for="f-cidade">Cidade / Estado</label>
+              <input id="f-cidade" type="text" placeholder="São Paulo - SP">
+            </div>
+            <div class="field">
+              <label for="f-civil">Estado civil</label>
+              <select id="f-civil">
+                <option value="">Selecione</option>
+                <option>Solteiro(a)</option>
+                <option>Casado(a)</option>
+                <option>Divorciado(a)</option>
+                <option>Viúvo(a)</option>
+                <option>União estável</option>
+              </select>
             </div>
           </div>
         </div>
 
+        <!-- 2. Dados da Empresa -->
         <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">5</span><span class="fsec-title">Verbas, Direitos e Condições</span><span class="fsec-chev">›</span></div>
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">2</span>
+            <span class="fsec-title">Dados da Empresa</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
+          </div>
           <div class="form-sec-body">
-            <div class="field full"><label>Situações identificadas no caso:</label><div class="check-grp"><label class="cb" onclick="cTog(this);cShow('c-ins',this.classList.contains('active'))"><input type="checkbox">Insalubridade</label><label class="cb" onclick="cTog(this);cShow('c-peri',this.classList.contains('active'))"><input type="checkbox">Periculosidade</label><label class="cb" onclick="cTog(this);cShow('c-acum',this.classList.contains('active'))"><input type="checkbox">Acúmulo de funções</label><label class="cb" onclick="cTog(this);cShow('c-dano',this.classList.contains('active'))"><input type="checkbox">Dano moral / Assédio</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Diferença salarial</label><label class="cb" onclick="cTog(this)"><input type="checkbox">FGTS não depositado</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Férias não gozadas</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Vale-alimentação</label></div></div>
-            <div class="cond-block" id="c-ins"><div class="cond-title">Insalubridade</div><div class="field full"><label>Descreva o agente insalubre</label><textarea placeholder="Ex: câmara fria, produtos químicos, barulho..."></textarea></div><div class="field"><label>Recebia adicional?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'ins')"><input type="radio">Sim</label><label class="rb" onclick="rSel(this,'ins')"><input type="radio">Não</label></div></div></div>
-            <div class="cond-block" id="c-peri"><div class="cond-title">Periculosidade</div><div class="field full"><label>Qual era o risco?</label><textarea placeholder="Ex: eletricidade de alta tensão, explosivos..."></textarea></div><div class="field"><label>Recebia adicional?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'peri')"><input type="radio">Sim</label><label class="rb" onclick="rSel(this,'peri')"><input type="radio">Não</label></div></div></div>
-            <div class="cond-block" id="c-acum"><div class="cond-title">Acúmulo de Funções</div><div class="field"><label>Cargo contratado</label><input type="text" placeholder="Ex: Operador de Caixa"></div><div class="field"><label>Funções adicionais</label><input type="text" placeholder="Ex: Estoquista, Líder..."></div><div class="field"><label>Recebia pela função adicional?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'acum')"><input type="radio">Sim</label><label class="rb" onclick="rSel(this,'acum')"><input type="radio">Não</label></div></div></div>
-            <div class="cond-block single" id="c-dano"><div class="cond-title">Dano Moral / Assédio</div><div class="field"><label>Tipo de dano</label><div class="check-grp"><label class="cb" onclick="cTog(this)"><input type="checkbox">Assédio moral</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Cobrança abusiva</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Acidente de trabalho</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Humilhação pública</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Discriminação</label></div></div><div class="field"><label>Descreva o ocorrido</label><textarea placeholder="Relate com detalhes: quando, onde, quem, como afetou..."></textarea></div></div>
+            <div class="field full">
+              <label for="f-razao">Razão social / Nome fantasia</label>
+              <input id="f-razao" type="text" placeholder="Ex: Drogaria São Paulo, Carrefour...">
+            </div>
+            <div class="field">
+              <label for="f-cnpj">CNPJ</label>
+              <input id="f-cnpj" type="text" placeholder="00.000.000/0000-00">
+            </div>
+            <div class="field">
+              <label for="f-cidademp">Cidade da empresa</label>
+              <input id="f-cidademp" type="text" placeholder="Onde trabalhava">
+            </div>
+            <div class="field">
+              <label for="f-cargo">Cargo / Função</label>
+              <input id="f-cargo" type="text" placeholder="Ex: Açougueiro, Operador de Caixa...">
+            </div>
+            <div class="field">
+              <label for="f-salario">Último salário bruto (R$)</label>
+              <input id="f-salario" type="text" placeholder="Ex: 2.150,00">
+            </div>
           </div>
         </div>
 
+        <!-- 3. Contrato de Trabalho -->
         <div class="form-section">
-          <div class="form-sec-hdr" onclick="fToggle(this)"><span class="fsec-num">6</span><span class="fsec-title">Documentos Disponíveis</span><span class="fsec-chev">›</span></div>
-          <div class="form-sec-body single">
-            <div class="field"><label>Documentos que o cliente possui:</label><div class="check-grp"><label class="cb" onclick="cTog(this)"><input type="checkbox">Carteira de Trabalho (CTPS)</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Holerites dos últimos 5 anos</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Termo de Rescisão (TRCT)</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Cartões / Registros de ponto</label><label class="cb" onclick="cTog(this)"><input type="checkbox">RG e CPF</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Comprovante de PIS/PASEP</label><label class="cb" onclick="cTog(this)"><input type="checkbox">E-mails ou mensagens</label><label class="cb" onclick="cTog(this)"><input type="checkbox">Nenhum documento</label></div></div>
-            <div class="field"><label>Possui testemunhas?</label><div class="radio-grp"><label class="rb" onclick="rSel(this,'test')"><input type="radio">Sim, confirmadas</label><label class="rb" onclick="rSel(this,'test')"><input type="radio">Possíveis</label><label class="rb" onclick="rSel(this,'test')"><input type="radio">Não possui</label></div></div>
-            <div class="field"><label>Observações adicionais</label><textarea placeholder="Qualquer detalhe relevante não coberto acima..."></textarea></div>
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">3</span>
+            <span class="fsec-title">Contrato de Trabalho</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
+          </div>
+          <div class="form-sec-body">
+            <div class="field">
+              <label for="f-admissao">Data de admissão</label>
+              <input id="f-admissao" type="date">
+            </div>
+            <div class="field">
+              <label for="f-demissao">Data de demissão</label>
+              <input id="f-demissao" type="date">
+            </div>
+            <div class="field full">
+              <label>Forma de desligamento</label>
+              <div class="radio-grp">
+                <label class="rb" onclick="rSel(this,'dem')"><input type="radio" name="dem">Sem justa causa</label>
+                <label class="rb" onclick="rSel(this,'dem')"><input type="radio" name="dem">Com justa causa</label>
+                <label class="rb" onclick="rSel(this,'dem')"><input type="radio" name="dem">Pediu demissão</label>
+                <label class="rb" onclick="rSel(this,'dem')"><input type="radio" name="dem">Aposentadoria</label>
+              </div>
+            </div>
+            <div class="field full">
+              <label>CTPS foi assinada?</label>
+              <div class="radio-grp">
+                <label class="rb" onclick="rSel(this,'ctps')"><input type="radio" name="ctps">Sim, corretamente</label>
+                <label class="rb" onclick="rSel(this,'ctps')"><input type="radio" name="ctps">Não foi assinada</label>
+                <label class="rb" onclick="rSel(this,'ctps')"><input type="radio" name="ctps">Assinada parcialmente</label>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- 4. Jornada e Horas Extras -->
+        <div class="form-section">
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">4</span>
+            <span class="fsec-title">Jornada e Horas Extras</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
+          </div>
+          <div class="form-sec-body">
+            <div class="field">
+              <label for="f-entrada">Entrada</label>
+              <input id="f-entrada" type="time">
+            </div>
+            <div class="field">
+              <label for="f-saida">Saída</label>
+              <input id="f-saida" type="time">
+            </div>
+            <div class="field">
+              <label for="f-intervalo">Intervalo de almoço</label>
+              <select id="f-intervalo">
+                <option value="">Selecione</option>
+                <option>Não tinha</option>
+                <option>Menos de 1h</option>
+                <option>1 hora</option>
+                <option>Mais de 1h</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-ponto">Controle de ponto</label>
+              <select id="f-ponto">
+                <option value="">Selecione</option>
+                <option>Ponto eletrônico</option>
+                <option>Cartão de ponto</option>
+                <option>Folha de presença</option>
+                <option>Sem controle</option>
+                <option>Dispensado de marcar</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Realizava horas extras habitualmente?</label>
+              <div class="radio-grp">
+                <label class="rb" onclick="rSel(this,'he'); cShow('c-he', true)"><input type="radio" name="he">Sim</label>
+                <label class="rb" onclick="rSel(this,'he'); cShow('c-he', false)"><input type="radio" name="he">Não</label>
+              </div>
+            </div>
+            <div class="cond-block" id="c-he">
+              <div class="field">
+                <label>Quantidade por dia</label>
+                <input type="text" placeholder="Ex: 2 horas diárias">
+              </div>
+              <div class="field">
+                <label>Recebia pagamento pelas HE?</label>
+                <select>
+                  <option value="">Selecione</option>
+                  <option>Sim, sempre</option>
+                  <option>Às vezes</option>
+                  <option>Nunca recebia</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label>Trabalhava também em (selecione todos que se aplicam):</label>
+                <div class="check-grp">
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Sábados</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Domingos</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Feriados</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Reuniões fora do horário</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Verbas, Direitos e Condições -->
+        <div class="form-section">
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">5</span>
+            <span class="fsec-title">Verbas, Direitos e Condições</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
+          </div>
+          <div class="form-sec-body">
+            <div class="field full">
+              <label>Situações identificadas no caso (selecione todas que se aplicam):</label>
+              <div class="check-grp">
+                <label class="cb" onclick="cTog(this); cShow('c-ins',  this.classList.contains('active'))"><input type="checkbox">Insalubridade</label>
+                <label class="cb" onclick="cTog(this); cShow('c-peri', this.classList.contains('active'))"><input type="checkbox">Periculosidade</label>
+                <label class="cb" onclick="cTog(this); cShow('c-acum', this.classList.contains('active'))"><input type="checkbox">Acúmulo de funções</label>
+                <label class="cb" onclick="cTog(this); cShow('c-dano', this.classList.contains('active'))"><input type="checkbox">Dano moral / Assédio</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Diferença salarial</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">FGTS não depositado</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Férias não gozadas</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Vale-alimentação</label>
+              </div>
+            </div>
+
+            <!-- Conditional: Insalubridade -->
+            <div class="cond-block single" id="c-ins">
+              <div class="cond-title">Insalubridade</div>
+              <div class="field">
+                <label>Descreva o agente insalubre</label>
+                <textarea placeholder="Ex: câmara fria, produtos químicos, barulho..."></textarea>
+              </div>
+              <div class="field">
+                <label>Recebia adicional?</label>
+                <div class="radio-grp">
+                  <label class="rb" onclick="rSel(this,'ins')"><input type="radio" name="ins">Sim</label>
+                  <label class="rb" onclick="rSel(this,'ins')"><input type="radio" name="ins">Não</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Conditional: Periculosidade -->
+            <div class="cond-block single" id="c-peri">
+              <div class="cond-title">Periculosidade</div>
+              <div class="field">
+                <label>Qual era o risco?</label>
+                <textarea placeholder="Ex: eletricidade de alta tensão, explosivos..."></textarea>
+              </div>
+              <div class="field">
+                <label>Recebia adicional?</label>
+                <div class="radio-grp">
+                  <label class="rb" onclick="rSel(this,'peri')"><input type="radio" name="peri">Sim</label>
+                  <label class="rb" onclick="rSel(this,'peri')"><input type="radio" name="peri">Não</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Conditional: Acúmulo -->
+            <div class="cond-block" id="c-acum">
+              <div class="cond-title">Acúmulo de Funções</div>
+              <div class="field">
+                <label>Cargo contratado</label>
+                <input type="text" placeholder="Ex: Operador de Caixa">
+              </div>
+              <div class="field">
+                <label>Funções adicionais</label>
+                <input type="text" placeholder="Ex: Estoquista, Líder...">
+              </div>
+              <div class="field">
+                <label>Recebia pela função adicional?</label>
+                <div class="radio-grp">
+                  <label class="rb" onclick="rSel(this,'acum')"><input type="radio" name="acum">Sim</label>
+                  <label class="rb" onclick="rSel(this,'acum')"><input type="radio" name="acum">Não</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Conditional: Dano moral -->
+            <div class="cond-block single" id="c-dano">
+              <div class="cond-title">Dano Moral / Assédio</div>
+              <div class="field">
+                <label>Tipo de dano (selecione todos que se aplicam):</label>
+                <div class="check-grp">
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Assédio moral</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Cobrança abusiva</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Acidente de trabalho</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Humilhação pública</label>
+                  <label class="cb" onclick="cTog(this)"><input type="checkbox">Discriminação</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>Descreva o ocorrido</label>
+                <textarea placeholder="Relate com detalhes: quando, onde, quem, como afetou..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Documentos Disponíveis -->
+        <div class="form-section">
+          <div class="form-sec-hdr" onclick="fToggle(this)" aria-expanded="true">
+            <span class="fsec-num">6</span>
+            <span class="fsec-title">Documentos Disponíveis</span>
+            <span class="fsec-chev" aria-hidden="true">›</span>
+          </div>
+          <div class="form-sec-body single">
+            <div class="field">
+              <label>Documentos que o cliente possui (selecione todos):</label>
+              <div class="check-grp">
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Carteira de Trabalho (CTPS)</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Holerites dos últimos 5 anos</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Termo de Rescisão (TRCT)</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Cartões / Registros de ponto</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">RG e CPF</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Comprovante de PIS/PASEP</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">E-mails ou mensagens</label>
+                <label class="cb" onclick="cTog(this)"><input type="checkbox">Nenhum documento</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Possui testemunhas?</label>
+              <div class="radio-grp">
+                <label class="rb" onclick="rSel(this,'test')"><input type="radio" name="test">Sim, confirmadas</label>
+                <label class="rb" onclick="rSel(this,'test')"><input type="radio" name="test">Possíveis</label>
+                <label class="rb" onclick="rSel(this,'test')"><input type="radio" name="test">Não possui</label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-obs">Observações adicionais</label>
+              <textarea id="f-obs" placeholder="Qualquer detalhe relevante não coberto acima..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
         <div class="form-submit">
           <p>As informações serão enviadas com segurança para análise da equipe jurídica.</p>
           <button class="btn-primary" onclick="submitEnt()">Enviar entrevista →</button>
         </div>
       </div>
 
-      <div class="success-state" id="entSuccess">
-        <div class="success-ring">✓</div>
+      <!-- Success State -->
+      <div class="success-state" id="entSuccess" role="status">
+        <div class="success-ring" aria-hidden="true">✓</div>
         <h3>Entrevista enviada com sucesso</h3>
         <p>Nossa equipe receberá as informações e entrará em contato em breve.</p>
       </div>
     </div>
   </div>
 
-  <!-- ═══ TAB 3: INSIGHTS ═══ -->
-  <div class="tab-content" id="tab-insights">
+  <!-- ═══════════════════════════════════════════════
+       TAB 3 · INSIGHTS
+  ═══════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-insights" role="tabpanel">
     <div class="insights-outer">
       <div class="section-hero">
         <div class="section-eyebrow">Inteligência do Escritório</div>
-        <h2 class="section-title">Insights & Métricas</h2>
+        <h2 class="section-title">Insights &amp; Métricas</h2>
         <p class="section-desc">Visão geral do desempenho do escritório e oportunidades identificadas pelo sistema de IA.</p>
       </div>
+
       <div class="insights-grid">
         <div class="insight-card">
-          <div class="ic-icon">⚖️</div>
+          <div class="ic-icon" aria-hidden="true">⚖️</div>
           <div class="ic-num" id="icTotal">0</div>
           <div class="ic-label">Casos analisados</div>
           <div class="ic-desc">Total de entrevistas processadas pelo sistema de IA nesta sessão.</div>
-          <div class="ic-bar"><div class="ic-bar-fill" style="width:0%" id="icBar1"></div></div>
+          <div class="ic-bar"><div class="ic-bar-fill" id="icBar1" style="width:0%"></div></div>
         </div>
         <div class="insight-card">
-          <div class="ic-icon">✦</div>
+          <div class="ic-icon" aria-hidden="true">✦</div>
           <div class="ic-num" style="color:#3a8830" id="icAlto">0</div>
           <div class="ic-label">Alto potencial</div>
           <div class="ic-desc">Casos com teses sólidas e boa probabilidade de êxito processual.</div>
-          <div class="ic-bar"><div class="ic-bar-fill" style="width:0%;background:linear-gradient(90deg,#3a8830,#5aaa50)" id="icBar2"></div></div>
+          <div class="ic-bar"><div class="ic-bar-fill" id="icBar2" style="width:0%;background:linear-gradient(90deg,#3a8830,#5aaa50)"></div></div>
         </div>
         <div class="insight-card">
-          <div class="ic-icon">📋</div>
+          <div class="ic-icon" aria-hidden="true">📋</div>
           <div class="ic-num" id="icEnt">0</div>
           <div class="ic-label">Entrevistas online</div>
           <div class="ic-desc">Formulários preenchidos via portal digital nesta sessão.</div>
-          <div class="ic-bar"><div class="ic-bar-fill" style="width:0%" id="icBar3"></div></div>
+          <div class="ic-bar"><div class="ic-bar-fill" id="icBar3" style="width:0%"></div></div>
         </div>
         <div class="insight-card">
-          <div class="ic-icon">🏆</div>
+          <div class="ic-icon" aria-hidden="true">🏆</div>
           <div class="ic-num" id="icTaxa">—</div>
           <div class="ic-label">Taxa de aproveitamento</div>
           <div class="ic-desc">Percentual de casos com potencial alto ou médio identificados.</div>
-          <div class="ic-bar"><div class="ic-bar-fill" style="width:0%" id="icBar4"></div></div>
+          <div class="ic-bar"><div class="ic-bar-fill" id="icBar4" style="width:0%"></div></div>
         </div>
       </div>
+
       <div class="insights-cta">
-        <div style="font-size:28px">🤖</div>
+        <div class="insights-cta-emoji" aria-hidden="true">🤖</div>
         <div class="insights-cta-text">
           <h4>Motor de IA Ativo</h4>
           <p>IA processando análises jurídicas em tempo real. Acurácia otimizada para direito trabalhista brasileiro.</p>
@@ -605,424 +592,157 @@ body::after{content:"";position:fixed;inset:0;background-image:url("data:image/s
     </div>
   </div>
 
-  <!-- ═══ TAB 4: HISTÓRICO ═══ -->
-  <div class="tab-content" id="tab-historico">
+  <!-- ═══════════════════════════════════════════════
+       TAB 4 · HISTÓRICO
+  ═══════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-historico" role="tabpanel">
     <div class="historico-outer">
       <div class="section-hero">
-        <div class="section-eyebrow">Registro de Análises</div>
-        <h2 class="section-title">Histórico da Sessão</h2>
-        <p class="section-desc">Análises realizadas durante esta sessão do portal.</p>
+        <div class="section-eyebrow">Registros da Sessão</div>
+        <h2 class="section-title">Histórico</h2>
+        <p class="section-desc">Análises e entrevistas realizadas durante esta sessão de trabalho.</p>
       </div>
-      <div id="histEmpty" class="hist-empty">
-        <div class="hist-empty-icon">🗂</div>
-        <h3>Nenhuma análise ainda</h3>
-        <p>As análises realizadas aparecem aqui durante a sessão.</p>
+
+      <div class="hist-empty" id="histEmpty">
+        <div class="hist-empty-icon" aria-hidden="true">🗂</div>
+        <h3>Nenhum registro ainda</h3>
+        <p>As análises realizadas aparecerão aqui.</p>
       </div>
+
       <div class="hist-list" id="histList" style="display:none"></div>
     </div>
   </div>
 
-  <!-- ═══ TAB 5: CONFIG ═══ -->
-  <div class="tab-content" id="tab-config">
+  <!-- ═══════════════════════════════════════════════
+       TAB 5 · CONFIG
+  ═══════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-config" role="tabpanel">
     <div class="config-outer">
       <div class="section-hero">
         <div class="section-eyebrow">Preferências do Sistema</div>
         <h2 class="section-title">Configurações</h2>
-        <p class="section-desc">Personalize o comportamento do portal jurídico.</p>
+        <p class="section-desc">Personalize o comportamento do portal e do motor de análise jurídica.</p>
       </div>
 
-      <!-- MODELO DE IA -->
+      <!-- Aparência -->
+      <div class="config-section">
+        <div class="config-section-title">Aparência &amp; Interface</div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">Cursor personalizado</div>
+            <div class="cr-sub">Cursor artístico com rastreio suave</div>
+          </div>
+          <div class="toggle on" onclick="togSwitch(this)" role="switch" aria-checked="true" tabindex="0"></div>
+        </div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">Animações de fundo</div>
+            <div class="cr-sub">Partículas ambientes e malha de gradiente</div>
+          </div>
+          <div class="toggle on" onclick="togSwitch(this)" role="switch" aria-checked="true" tabindex="0"></div>
+        </div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">Efeito grain</div>
+            <div class="cr-sub">Textura de ruído sobre o fundo</div>
+          </div>
+          <div class="toggle on" onclick="togSwitch(this)" role="switch" aria-checked="true" tabindex="0"></div>
+        </div>
+      </div>
+
+      <!-- Escritório -->
+      <div class="config-section">
+        <div class="config-section-title">Dados do Escritório</div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">Nome do escritório</div>
+          </div>
+          <input class="config-input" type="text" value="Diferencial Soluções" placeholder="Nome">
+        </div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">OAB</div>
+          </div>
+          <input class="config-input" type="text" placeholder="XX/000000">
+        </div>
+        <div class="config-row">
+          <div>
+            <div class="cr-label">Versão do sistema</div>
+          </div>
+          <span class="config-badge">v2.0.0</span>
+        </div>
+      </div>
+
+      <!-- Modelo IA -->
       <div class="config-section">
         <div class="config-section-title">Modelo de IA</div>
-        <div class="model-grid" id="modelGrid">
-          <label class="model-card selected" onclick="selectModel(this,'claude-sonnet-4-20250514')">
-            <input type="radio" name="aiModel" value="claude-sonnet-4-20250514" checked>
+        <div class="model-grid">
+          <div class="model-card selected" onclick="selectModel(this)">
+            <input type="radio" name="model" checked>
+            <div class="model-logo" aria-hidden="true">⚡</div>
+            <div class="model-name">Sonnet 4</div>
+            <div class="model-desc">Melhor custo-benefício para análises trabalhistas</div>
             <div class="model-check">✓</div>
-            <div class="model-logo">🟣</div>
-            <div class="model-name">Claude Sonnet</div>
-            <div class="model-desc">Anthropic · Análise jurídica profunda, raciocínio avançado</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'claude-opus-4-20250514')">
-            <input type="radio" name="aiModel" value="claude-opus-4-20250514">
+          </div>
+          <div class="model-card" onclick="selectModel(this)">
+            <input type="radio" name="model">
+            <div class="model-logo" aria-hidden="true">🔮</div>
+            <div class="model-name">Opus 4</div>
+            <div class="model-desc">Máxima precisão para casos complexos</div>
             <div class="model-check">✓</div>
-            <div class="model-logo">🔮</div>
-            <div class="model-name">Claude Opus</div>
-            <div class="model-desc">Anthropic · Máxima capacidade, tarefas complexas</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'gpt-4o')">
-            <input type="radio" name="aiModel" value="gpt-4o">
+          </div>
+          <div class="model-card" onclick="selectModel(this)">
+            <input type="radio" name="model">
+            <div class="model-logo" aria-hidden="true">🌿</div>
+            <div class="model-name">Haiku 4.5</div>
+            <div class="model-desc">Ultra rápido para análises rápidas</div>
             <div class="model-check">✓</div>
-            <div class="model-logo">🟢</div>
-            <div class="model-name">GPT-4o</div>
-            <div class="model-desc">OpenAI · Alta velocidade, multimodal</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'gpt-4-turbo')">
-            <input type="radio" name="aiModel" value="gpt-4-turbo">
-            <div class="model-check">✓</div>
-            <div class="model-logo">⚡</div>
-            <div class="model-name">GPT-4 Turbo</div>
-            <div class="model-desc">OpenAI · Janela de contexto longa, eficiente</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'deepseek-r1')">
-            <input type="radio" name="aiModel" value="deepseek-r1">
-            <div class="model-check">✓</div>
-            <div class="model-logo">🔵</div>
-            <div class="model-name">DeepSeek R1</div>
-            <div class="model-desc">DeepSeek · Raciocínio por cadeia, lógica jurídica</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'perplexity-llama')">
-            <input type="radio" name="aiModel" value="perplexity-llama">
-            <div class="model-check">✓</div>
-            <div class="model-logo">🌐</div>
-            <div class="model-name">Perplexity</div>
-            <div class="model-desc">Perplexity AI · Busca em tempo real integrada</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'gemini-2.0-flash')">
-            <input type="radio" name="aiModel" value="gemini-2.0-flash">
-            <div class="model-check">✓</div>
-            <div class="model-logo">💠</div>
-            <div class="model-name">Gemini Flash</div>
-            <div class="model-desc">Google · Rapidez excepcional, contexto amplo</div>
-          </label>
-          <label class="model-card" onclick="selectModel(this,'gemini-2.0-pro')">
-            <input type="radio" name="aiModel" value="gemini-2.0-pro">
-            <div class="model-check">✓</div>
-            <div class="model-logo">💎</div>
-            <div class="model-name">Gemini Pro</div>
-            <div class="model-desc">Google · Raciocínio de ponta, longa memória</div>
-          </label>
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">Análise aprofundada</div><div class="cr-sub">Mais tokens — análise mais detalhada e precisa</div></div>
-          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">Estimativa de valores</div><div class="cr-sub">Incluir cálculo estimado de verbas rescisórias</div></div>
-          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">Temperatura da IA</div><div class="cr-sub">Criatividade x objetividade nas análises</div></div>
-          <div class="config-range-wrap">
-            <input type="range" class="config-range" min="0" max="10" value="3" oninput="document.getElementById('tmpVal').textContent=(this.value/10).toFixed(1)">
-            <span class="range-val" id="tmpVal">0.3</span>
           </div>
         </div>
       </div>
 
-      <!-- INTERFACE -->
+      <!-- Análise -->
       <div class="config-section">
-        <div class="config-section-title">Interface</div>
+        <div class="config-section-title">Parâmetros de Análise</div>
         <div class="config-row">
-          <div><div class="cr-label">Animações de canvas</div><div class="cr-sub">Partículas e efeitos de fundo do portal</div></div>
-          <div class="toggle on" id="toggleCanvas" onclick="this.classList.toggle('on');toggleCanvasAnim()"></div>
+          <div>
+            <div class="cr-label">Criatividade das teses</div>
+            <div class="cr-sub">Temperatura do modelo (0 = conservador, 1 = criativo)</div>
+          </div>
+          <div class="config-range-wrap">
+            <input class="config-range" type="range" min="0" max="1" step="0.1" value="0.3" oninput="rangeVal(this, 'rTemp', '')">
+            <span class="range-val" id="rTemp">0.3</span>
+          </div>
         </div>
         <div class="config-row">
-          <div><div class="cr-label">Cursor personalizado</div><div class="cr-sub">Cursor premium animado com anel dourado</div></div>
-          <div class="toggle on" id="toggleCursor" onclick="this.classList.toggle('on');toggleCursorVis()"></div>
+          <div>
+            <div class="cr-label">Tamanho máximo da resposta</div>
+            <div class="cr-sub">Em tokens da API</div>
+          </div>
+          <div class="config-range-wrap">
+            <input class="config-range" type="range" min="500" max="2000" step="100" value="1000" oninput="rangeVal(this, 'rTok', ' tk')">
+            <span class="range-val" id="rTok">1000 tk</span>
+          </div>
         </div>
         <div class="config-row">
-          <div><div class="cr-label">Sons de interação</div><div class="cr-sub">Feedback sonoro sutil ao navegar</div></div>
-          <div class="toggle" onclick="this.classList.toggle('on')"></div>
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">Compactação de resultados</div><div class="cr-sub">Exibir resultados resumidos por padrão</div></div>
-          <div class="toggle" onclick="this.classList.toggle('on')"></div>
-        </div>
-      </div>
-
-      <!-- ESCRITÓRIO -->
-      <div class="config-section">
-        <div class="config-section-title">Escritório</div>
-        <div class="config-row">
-          <div><div class="cr-label">Nome do escritório</div></div>
-          <input class="config-input" value="Diferencial Soluções">
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">WhatsApp de suporte</div><div class="cr-sub">Contato técnico Nova IA Solutions</div></div>
-          <input class="config-input" value="(11) 95100-7967" style="width:160px">
-        </div>
-        <div class="config-row">
-          <div><div class="cr-label">Versão do portal</div><div class="cr-sub">Última atualização</div></div>
-          <div class="config-badge">v2.1 · 2025</div>
+          <div>
+            <div class="cr-label">Análise automática ao carregar</div>
+            <div class="cr-sub">Iniciar análise assim que PDF for selecionado</div>
+          </div>
+          <div class="toggle" onclick="togSwitch(this)" role="switch" aria-checked="false" tabindex="0"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="portal-footer">Desenvolvido por Nova IA Solutions &nbsp;·&nbsp; Uso exclusivo interno · Diferencial Soluções &nbsp;·&nbsp; (11) 95100-7967</div>
-</div>
+  <!-- FOOTER -->
+  <footer class="portal-footer" role="contentinfo">
+    Diferencial Soluções · Portal Jurídico IA · Uso exclusivo interno · v2.0.0
+  </footer>
 
-<script>
-// ── CURSOR ──
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-4+'px';cur.style.top=my-4+'px';});
-function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
-animRing();
-document.querySelectorAll('button,a,[onclick]').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.transform='scale(2.5)';ring.style.borderColor='rgba(139,94,46,0.7)';ring.style.width='50px';ring.style.height='50px';});el.addEventListener('mouseleave',()=>{cur.style.transform='scale(1)';ring.style.borderColor='rgba(139,94,46,0.4)';ring.style.width='36px';ring.style.height='36px';});});
-function toggleCursorVis(){const on=document.getElementById('toggleCursor').classList.contains('on');document.getElementById('cursor').style.display=on?'':'none';document.getElementById('cursor-ring').style.display=on?'':'none';}
+</div><!-- /#app -->
 
-// ── CANVAS ──
-const canvas=document.getElementById('bgCanvas');
-const ctx=canvas.getContext('2d');
-let W,H,particles=[],canvasActive=true;
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-resize();
-window.addEventListener('resize',resize);
-for(let i=0;i<80;i++)particles.push({x:Math.random()*2000,y:Math.random()*1200,vx:(Math.random()-0.5)*0.25,vy:(Math.random()-0.5)*0.25,r:Math.random()*1.0+0.2,a:Math.random()*0.35+0.05,pulse:Math.random()*Math.PI*2});
-function drawCanvas(){
-  if(!canvasActive){requestAnimationFrame(drawCanvas);return;}
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='rgba(245,237,224,0.92)';ctx.fillRect(0,0,W,H);
-  const t=Date.now()*0.001;
-  // warm orbs
-  const g1=ctx.createRadialGradient(W*0.15,H*0.25,0,W*0.15,H*0.25,W*0.4);
-  g1.addColorStop(0,'rgba(196,146,85,0.12)');g1.addColorStop(1,'transparent');
-  ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);
-  const g2=ctx.createRadialGradient(W*0.85,H*0.75,0,W*0.85,H*0.75,W*0.35);
-  g2.addColorStop(0,'rgba(160,97,42,0.08)');g2.addColorStop(1,'transparent');
-  ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);
-  const g3=ctx.createRadialGradient(W*0.5,H*0.5,0,W*0.5,H*0.5,W*0.45);
-  g3.addColorStop(0,'rgba(237,224,204,0.3)');g3.addColorStop(1,'transparent');
-  ctx.fillStyle=g3;ctx.fillRect(0,0,W,H);
-  // particles (gold dust)
-  particles.forEach(p=>{
-    p.x+=p.vx;p.y+=p.vy;p.pulse+=0.018;
-    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-    const alpha=p.a*(0.5+0.5*Math.sin(p.pulse));
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(139,94,46,${alpha})`;ctx.fill();
-  });
-  // subtle grid
-  ctx.strokeStyle='rgba(139,94,46,0.035)';ctx.lineWidth=1;
-  for(let x=0;x<W;x+=90){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<H;y+=90){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  // warm flowing lines
-  ctx.strokeStyle='rgba(196,146,85,0.08)';ctx.lineWidth=1.5;
-  for(let i=0;i<2;i++){
-    ctx.beginPath();
-    for(let x=0;x<=W;x+=4){
-      const y=H*0.35+Math.sin((x*0.007+t*0.4+i*2.5))*55+Math.sin((x*0.013+t*0.25+i))*28+H*i*0.22;
-      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-  requestAnimationFrame(drawCanvas);
-}
-drawCanvas();
-function toggleCanvasAnim(){canvasActive=!canvasActive;}
-
-// ── LOADER ──
-const ldBar=document.getElementById('ldBar'),ldPct=document.getElementById('ldPct'),ldSt=document.getElementById('ldStatus');
-const ldMessages=['Iniciando sistema...','Carregando módulos jurídicos...','Conectando ao motor de IA...','Verificando credenciais...','Portal pronto'];
-let ldP=0,ldMsg=0;
-const ldSteps=[{t:20,s:40},{t:55,s:60},{t:80,s:80},{t:95,s:90},{t:100,s:50}];
-let ldSi=0;
-function runLoader(){
-  if(ldSi>=ldSteps.length)return;
-  const{t,s}=ldSteps[ldSi];
-  const tick=setInterval(()=>{
-    if(ldP>=t){
-      clearInterval(tick);ldSi++;
-      ldMsg=Math.min(ldMsg+1,ldMessages.length-1);
-      ldSt.textContent=ldMessages[ldMsg];
-      if(ldSi<ldSteps.length)setTimeout(runLoader,200);
-      else setTimeout(()=>{document.getElementById('loader').classList.add('done');},600);
-      return;
-    }
-    ldP++;ldBar.style.width=ldP+'%';ldPct.textContent=ldP+'%';
-  },s);
-}
-window.addEventListener('load',()=>setTimeout(runLoader,400));
-
-// ── TABS ──
-function switchTab(name){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  const tc=document.getElementById('tab-'+name);
-  const tb=document.querySelector('[data-tab="'+name+'"]');
-  if(tc)tc.classList.add('active');
-  if(tb)tb.classList.add('active');
-  if(name==='insights')updateInsights();
-  if(name==='historico')updateHistorico();
-}
-
-// ── FORM SECTION TOGGLE ──
-function fToggle(h){
-  const b=h.nextElementSibling;
-  const hiding=!b.classList.contains('hidden');
-  h.classList.toggle('collapsed',hiding);
-  b.classList.toggle('hidden',hiding);
-}
-
-// ── RADIO / CHECK ──
-function rSel(el,name){
-  el.closest('.radio-grp,.form-sec-body,.cond-block').querySelectorAll('.rb').forEach(r=>{
-    if(r.getAttribute('onclick')&&r.getAttribute('onclick').includes("'"+name+"'"))r.classList.remove('active');
-  });
-  el.classList.add('active');
-}
-function cTog(el){el.classList.toggle('active');}
-function cShow(id,show){const e=document.getElementById(id);if(e)e.classList.toggle('visible',show);}
-
-// ── MODEL SELECTOR ──
-function selectModel(card,val){
-  document.querySelectorAll('.model-card').forEach(c=>c.classList.remove('selected'));
-  card.classList.add('selected');
-}
-
-// ── ENTREVISTA SUBMIT ──
-let entCount=0;
-function submitEnt(){
-  document.getElementById('entForm').style.display='none';
-  document.getElementById('entSuccess').classList.add('show');
-  entCount++;
-  saveHist('Entrevista #'+entCount,'Online','medio',new Date().toLocaleString('pt-BR'));
-}
-
-// ── HISTORY ──
-let histItems=[];
-function saveHist(nome,tipo,pot,dt){
-  histItems.unshift({nome,tipo,pot,dt});
-}
-function updateHistorico(){
-  const empty=document.getElementById('histEmpty');
-  const list=document.getElementById('histList');
-  if(histItems.length===0){empty.style.display='block';list.style.display='none';return;}
-  empty.style.display='none';list.style.display='flex';
-  list.innerHTML=histItems.map(h=>`
-    <div class="hist-item">
-      <div class="hi-dot ${h.pot}"></div>
-      <div class="hi-info"><div class="hi-name">${h.nome}</div><div class="hi-meta">${h.tipo} · ${h.dt}</div></div>
-      <span class="hi-badge ${h.pot}">${h.pot==='alto'?'Alto':h.pot==='medio'?'Médio':'Baixo'}</span>
-    </div>`).join('');
-}
-
-// ── INSIGHTS ──
-let totalAnal=0,totalAlto=0;
-function updateInsights(){
-  document.getElementById('icTotal').textContent=totalAnal;
-  document.getElementById('icAlto').textContent=totalAlto;
-  document.getElementById('icEnt').textContent=entCount;
-  const taxa=totalAnal>0?Math.round((totalAlto/totalAnal)*100)+'%':'—';
-  document.getElementById('icTaxa').textContent=taxa;
-  setTimeout(()=>{
-    document.getElementById('icBar1').style.width=Math.min(totalAnal*20,100)+'%';
-    document.getElementById('icBar2').style.width=totalAnal>0?Math.round((totalAlto/totalAnal)*100)+'%':'0%';
-    document.getElementById('icBar3').style.width=Math.min(entCount*30,100)+'%';
-    document.getElementById('icBar4').style.width=totalAnal>0?Math.round((totalAlto/totalAnal)*100)+'%':'0%';
-  },100);
-}
-
-// ── FILE UPLOAD ──
-let fileData=null,fileBase64=null;
-const dz=document.getElementById('dropzone'),fi=document.getElementById('fileInput');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over')});
-dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');if(e.dataTransfer.files[0])setFile(e.dataTransfer.files[0])});
-fi.addEventListener('change',()=>{if(fi.files[0])setFile(fi.files[0])});
-function setFile(f){
-  if(f.size>4.5*1024*1024){showErro('Arquivo muito grande. Máximo: 4,5 MB.');return;}
-  if(f.type!=='application/pdf'){showErro('Por favor, envie um arquivo PDF.');return;}
-  hideErro();fileData=f;
-  document.getElementById('fpName').textContent=f.name;
-  document.getElementById('fpSize').textContent=(f.size/1024/1024).toFixed(2)+' MB';
-  document.getElementById('filePill').classList.add('show');
-  document.getElementById('btnSend').disabled=false;
-  const reader=new FileReader();
-  reader.onload=e=>{fileBase64=e.target.result.split(',')[1]};
-  reader.readAsDataURL(f);
-}
-function removeFile(){fileData=null;fileBase64=null;document.getElementById('filePill').classList.remove('show');document.getElementById('btnSend').disabled=true;fi.value='';hideErro();}
-function showErro(msg){const e=document.getElementById('erroBox');e.textContent=msg;e.style.display='block';}
-function hideErro(){document.getElementById('erroBox').style.display='none';}
-
-// ── LOADING STEPS ──
-const ldStepsData=[[15,'Lendo o documento...'],[35,'Identificando dados do caso...'],[55,'Analisando oportunidades jurídicas...'],[72,'Calculando estimativas de verbas...'],[88,'Gerando recomendações estratégicas...'],[95,'Finalizando análise...']];
-let ldStep2=0,ldTimer;
-function startLoadingAnim(){
-  ldStep2=0;const fill=document.getElementById('slFill');fill.style.width='0%';
-  document.querySelectorAll('.sl-step').forEach(s=>s.className='sl-step');
-  function next(){
-    if(ldStep2<ldStepsData.length){
-      const[w,txt]=ldStepsData[ldStep2];
-      fill.style.width=w+'%';
-      const stepEl=document.getElementById('step'+ldStep2);
-      if(stepEl){stepEl.classList.add('active');if(ldStep2>0)document.getElementById('step'+(ldStep2-1)).classList.add('done');}
-      ldStep2++;ldTimer=setTimeout(next,900+Math.random()*600);
-    }
-  }
-  next();
-}
-function stopLoadingAnim(){
-  clearTimeout(ldTimer);
-  document.getElementById('slFill').style.width='100%';
-  document.querySelectorAll('.sl-step').forEach(s=>s.classList.add('done'));
-}
-
-// ── ENVIAR (API) ──
-async function enviar(){
-  if(!fileBase64)return;hideErro();
-  const btn=document.getElementById('btnSend'),sp=document.getElementById('spinnerRing'),ic=document.getElementById('btnIcon');
-  btn.disabled=true;sp.style.display='block';ic.style.display='none';
-  setTimeout(()=>{
-    document.getElementById('screenUpload').style.display='none';
-    document.getElementById('screenLoading').classList.add('show');
-    startLoadingAnim();
-  },200);
-  const systemPrompt=`Você é um assistente jurídico especializado em direito trabalhista brasileiro, auxiliando advogados do escritório Diferencial Soluções.
-Analise a entrevista trabalhista fornecida e retorne SOMENTE um JSON válido sem markdown:
-{"potencial":"ALTO"|"MEDIO"|"BAIXO","resumo":"Análise objetiva do caso","teses":[{"tese":"Nome","justificativa":"Por que cabível"}],"pontos_atencao":[{"tipo":"FORTE"|"ATENCAO","texto":"Descrição"}],"verbas":[{"verba":"Nome","base":"Base de cálculo","estimativa":"R$ X.XXX a R$ X.XXX"}],"total_estimado":"R$ XX.XXX a R$ XX.XXX","recomendacoes":"Orientações práticas e estratégia processual."}
-Retorne APENAS o JSON.`;
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:systemPrompt,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:fileBase64}},{type:'text',text:'Analise esta entrevista trabalhista.'}]}]})});
-    const data=await resp.json();
-    const txt=(data.content||[]).map(i=>i.text||'').join('');
-    const clean=txt.replace(/```json|```/g,'').trim();
-    const result=JSON.parse(clean);
-    stopLoadingAnim();
-    await new Promise(r=>setTimeout(r,700));
-    mostrarResultado(result);
-  }catch(err){
-    stopLoadingAnim();
-    document.getElementById('screenLoading').classList.remove('show');
-    document.getElementById('screenUpload').style.display='';
-    btn.disabled=false;sp.style.display='none';ic.style.display='';
-    showErro('Erro ao processar. Verifique o arquivo e tente novamente.');
-  }
-}
-
-function mostrarResultado(r){
-  document.getElementById('screenLoading').classList.remove('show');
-  document.getElementById('screenResultado').classList.add('show');
-  window.scrollTo(0,0);
-  totalAnal++;
-  const badge=document.getElementById('badgePotencial');badge.className='badge-pot';
-  if(r.potencial==='ALTO'){badge.classList.add('pot-alto');badge.textContent='✦ Alto Potencial';totalAlto++;}
-  else if(r.potencial==='MEDIO'){badge.classList.add('pot-medio');badge.textContent='◆ Médio Potencial';}
-  else{badge.classList.add('pot-baixo');badge.textContent='◇ Baixo Potencial';}
-  document.getElementById('resResumo').textContent=r.resumo||'';
-  const tb=document.getElementById('resTesesBody');tb.innerHTML='';
-  (r.teses||[]).forEach(t=>{const d=document.createElement('div');d.className='tese-item';d.innerHTML=`<div class="tese-nome">${t.tese}</div><div class="tese-just">${t.justificativa}</div>`;tb.appendChild(d);});
-  const pb=document.getElementById('resPontosBody');pb.innerHTML='';
-  (r.pontos_atencao||[]).forEach(p=>{const d=document.createElement('div');d.className='ponto-item '+(p.tipo==='FORTE'?'p-forte':'p-atencao');d.textContent=p.texto;pb.appendChild(d);});
-  const vb=document.getElementById('resVerbasBody');vb.innerHTML='';
-  (r.verbas||[]).forEach(v=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="v-nome">${v.verba}</td><td style="font-size:11px;color:rgba(44,24,16,0.32)">${v.base}</td><td class="v-val">${v.estimativa}</td>`;vb.appendChild(tr);});
-  if(r.total_estimado){const tr=document.createElement('tr');tr.className='total-row';tr.innerHTML=`<td class="v-nome" colspan="2" style="color:rgba(44,24,16,0.75);font-weight:500">Total Estimado</td><td class="v-val">${r.total_estimado}</td>`;vb.appendChild(tr);}
-  document.getElementById('resRec').textContent=r.recomendacoes||'';
-  const pot=r.potencial==='ALTO'?'alto':r.potencial==='MEDIO'?'medio':'baixo';
-  saveHist('Análise PDF','Automática',pot,new Date().toLocaleString('pt-BR'));
-}
-
-function voltarInicio(){
-  document.getElementById('screenResultado').classList.remove('show');
-  document.getElementById('screenUpload').style.display='';
-  removeFile();window.scrollTo(0,0);
-  document.getElementById('btnSend').disabled=false;
-  document.getElementById('spinnerRing').style.display='none';
-  document.getElementById('btnIcon').style.display='';
-}
-</script>
+<!-- ─── SCRIPTS ─── -->
+<script src="assets/js/main.js"></script>
 </body>
 </html>
