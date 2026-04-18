@@ -1763,9 +1763,9 @@ body::after {
   .btn-outline { margin-left: 0; }
 }
 
-/* ─── AJUSTE LOGOTIPO JPEG ─── */
-.logo-jpeg {
-  /* Remove o fundo branco do JPEG caso a imagem seja escura e o fundo do site seja claro */
+/* ─── AJUSTE LOGOTIPO JPG ─── */
+.logo-jpg {
+  /* Remove o fundo branco do JPG caso a imagem seja escura e o fundo do site seja claro */
   mix-blend-mode: multiply; 
   object-fit: contain;
   border-radius: 8px; /* Opcional: dá uma suavizada nas bordas caso o multiply não pegue 100% */
